@@ -1,43 +1,347 @@
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#534AB7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>¿Qué tipo de cirujano eres?</title>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font-sans); }
-.container { max-width: 600px; margin: 0 auto; padding: 1.5rem 1rem; }
-.progress-bar-bg { background: var(--color-background-secondary); border-radius: 999px; height: 6px; margin-bottom: 2rem; }
-.progress-bar-fill { background: #534AB7; border-radius: 999px; height: 6px; transition: width 0.4s ease; }
-.question-num { font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 0.5rem; letter-spacing: 0.05em; text-transform: uppercase; }
-.question-text { font-size: 20px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 1.75rem; line-height: 1.4; }
-.options { display: flex; flex-direction: column; gap: 10px; }
-.option-btn { background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; text-align: left; cursor: pointer; font-size: 15px; color: var(--color-text-primary); transition: border-color 0.15s, background 0.15s; display: flex; align-items: center; gap: 12px; }
-.option-btn:hover { border-color: #534AB7; background: var(--color-background-secondary); }
-.option-btn.selected { border-color: #534AB7; background: #EEEDFE; color: #3C3489; }
-.option-letter { width: 28px; height: 28px; border-radius: 50%; background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; color: var(--color-text-secondary); flex-shrink: 0; }
-.option-btn.selected .option-letter { background: #534AB7; color: #fff; border-color: #534AB7; }
-.next-btn { margin-top: 1.5rem; width: 100%; padding: 0.85rem; background: #534AB7; color: #fff; border: none; border-radius: var(--border-radius-lg); font-size: 16px; font-weight: 500; cursor: pointer; opacity: 0.4; pointer-events: none; transition: opacity 0.2s; }
-.next-btn.active { opacity: 1; pointer-events: all; }
-.next-btn:hover.active { background: #3C3489; }
-.result-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.75rem 1.5rem; text-align: center; }
-.result-emoji { font-size: 56px; margin-bottom: 1rem; }
-.result-label { font-size: 12px; color: var(--color-text-tertiary); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.35rem; }
-.result-title { font-size: 26px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 0.75rem; }
-.result-subtitle { font-size: 13px; color: #534AB7; font-weight: 500; margin-bottom: 1rem; }
-.result-desc { font-size: 15px; color: var(--color-text-secondary); line-height: 1.65; margin-bottom: 1.5rem; }
-.traits { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 1.5rem; }
-.trait { background: #EEEDFE; color: #3C3489; font-size: 13px; padding: 5px 14px; border-radius: 999px; }
-.brand { font-size: 13px; color: var(--color-text-tertiary); margin-top: 0.5rem; }
-.restart-btn { background: transparent; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-lg); padding: 0.6rem 1.25rem; font-size: 14px; color: var(--color-text-secondary); cursor: pointer; margin-top: 1rem; }
-.restart-btn:hover { background: var(--color-background-secondary); }
-.intro { text-align: center; padding: 1rem 0 2rem; }
-.intro h2 { font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 0.75rem; }
-.intro p { font-size: 15px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 1.75rem; }
-.start-btn { background: #534AB7; color: #fff; border: none; border-radius: var(--border-radius-lg); padding: 0.85rem 2.5rem; font-size: 16px; font-weight: 500; cursor: pointer; }
-.start-btn:hover { background: #3C3489; }
-.scalpel { font-size: 48px; margin-bottom: 1rem; }
-</style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
+  :root {
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --color-background-primary: #ffffff;
+    --color-background-secondary: #f5f5f7;
+    --color-text-primary: #1a1a1a;
+    --color-text-secondary: #555;
+    --color-text-tertiary: #999;
+    --color-border-secondary: #e0e0e0;
+    --color-border-tertiary: #ebebeb;
+    --border-radius-lg: 14px;
+    --purple: #534AB7;
+    --purple-dark: #3C3489;
+    --purple-light: #EEEDFE;
+    --purple-text: #3C3489;
+  }
+
+  html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-background-secondary);
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 480px;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: var(--color-background-primary);
+    display: flex;
+    flex-direction: column;
+    padding: env(safe-area-inset-top, 0) 0 env(safe-area-inset-bottom, 0);
+  }
+
+  .inner {
+    padding: 1.25rem 1.25rem 2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Progress bar */
+  .progress-bar-bg {
+    background: var(--color-background-secondary);
+    border-radius: 999px;
+    height: 5px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    background: var(--purple);
+    border-radius: 999px;
+    height: 5px;
+    transition: width 0.4s ease;
+  }
+
+  /* Question */
+  .question-num {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .question-text {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 1.5rem;
+    line-height: 1.45;
+  }
+
+  /* Options */
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+  .option-btn {
+    background: var(--color-background-primary);
+    border: 1.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-lg);
+    padding: 0.875rem 1rem;
+    text-align: left;
+    cursor: pointer;
+    font-size: 15px;
+    color: var(--color-text-primary);
+    transition: border-color 0.15s, background 0.15s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    font-family: var(--font-sans);
+    line-height: 1.4;
+    -webkit-appearance: none;
+    touch-action: manipulation;
+  }
+  .option-btn:active {
+    transform: scale(0.98);
+  }
+  .option-btn.selected {
+    border-color: var(--purple);
+    background: var(--purple-light);
+    color: var(--purple-text);
+  }
+  .option-letter {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--color-background-secondary);
+    border: 1.5px solid var(--color-border-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    flex-shrink: 0;
+  }
+  .option-btn.selected .option-letter {
+    background: var(--purple);
+    color: #fff;
+    border-color: var(--purple);
+  }
+
+  /* Next button */
+  .next-btn {
+    margin-top: 1.25rem;
+    width: 100%;
+    padding: 1rem;
+    background: var(--purple);
+    color: #fff;
+    border: none;
+    border-radius: var(--border-radius-lg);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    opacity: 0.35;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.1s;
+    font-family: var(--font-sans);
+    -webkit-appearance: none;
+    touch-action: manipulation;
+    letter-spacing: 0.01em;
+  }
+  .next-btn.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .next-btn.active:active {
+    transform: scale(0.98);
+    background: var(--purple-dark);
+  }
+
+  /* Intro */
+  .intro {
+    text-align: center;
+    padding: 2rem 0 1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .scalpel {
+    font-size: 56px;
+    margin-bottom: 1.25rem;
+    display: block;
+    line-height: 1;
+  }
+  .intro h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 0.875rem;
+    line-height: 1.25;
+  }
+  .intro p {
+    font-size: 15px;
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+    margin-bottom: 2rem;
+    max-width: 300px;
+  }
+  .start-btn {
+    background: var(--purple);
+    color: #fff;
+    border: none;
+    border-radius: var(--border-radius-lg);
+    padding: 1rem 2.5rem;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    -webkit-appearance: none;
+    touch-action: manipulation;
+    letter-spacing: 0.01em;
+    width: 100%;
+    max-width: 280px;
+  }
+  .start-btn:active {
+    background: var(--purple-dark);
+    transform: scale(0.98);
+  }
+
+  /* Result */
+  .result-card {
+    background: var(--color-background-primary);
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 1rem;
+  }
+  .result-emoji {
+    font-size: 64px;
+    margin-bottom: 1rem;
+    line-height: 1;
+    display: block;
+  }
+  .result-label {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+  }
+  .result-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+  .result-subtitle {
+    font-size: 14px;
+    color: var(--purple);
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    letter-spacing: 0.01em;
+  }
+
+  .result-divider {
+    width: 40px;
+    height: 3px;
+    background: var(--purple-light);
+    border-radius: 999px;
+    margin: 0 auto 1.25rem;
+  }
+
+  .result-desc {
+    font-size: 15px;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    text-align: left;
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-lg);
+    padding: 1rem 1.125rem;
+  }
+  .traits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+  .trait {
+    background: var(--purple-light);
+    color: var(--purple-text);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 16px;
+    border-radius: 999px;
+  }
+  .brand {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+    margin-top: 0.25rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+  }
+  .restart-btn {
+    background: transparent;
+    border: 1.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-lg);
+    padding: 0.75rem 1.5rem;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    font-family: var(--font-sans);
+    -webkit-appearance: none;
+    touch-action: manipulation;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+  .restart-btn:active {
+    background: var(--color-background-secondary);
+  }
+
+  /* Tablet+ */
+  @media (min-width: 520px) {
+    body { align-items: center; padding: 2rem 1rem; }
+    .container {
+      min-height: auto;
+      border-radius: 20px;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    .inner { padding: 1.75rem 1.75rem 2rem; }
+    .question-text { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
 <div class="container">
-  <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Quiz interactivo: ¿Qué tipo de cirujano eres?</h2>
-  <div id="app"></div>
+  <div class="inner">
+    <div id="app"></div>
+  </div>
 </div>
 
 <script>
@@ -100,7 +404,6 @@ const questions = [
 
 const profiles = [
   {
-    key: "estratega",
     emoji: "🧠",
     title: "El Cirujano Estratega",
     subtitle: "Piensa dos pasos adelante",
@@ -108,7 +411,6 @@ const profiles = [
     traits: ["Analítico", "Metódico", "Previsor", "Confiable"]
   },
   {
-    key: "intuitivo",
     emoji: "⚡",
     title: "El Cirujano Intuitivo",
     subtitle: "Nació para el quirófano",
@@ -116,7 +418,6 @@ const profiles = [
     traits: ["Decisivo", "Ágil", "Instintivo", "Resolutivo"]
   },
   {
-    key: "lider",
     emoji: "🦁",
     title: "El Cirujano Líder",
     subtitle: "Un equipo detrás de cada éxito",
@@ -124,7 +425,6 @@ const profiles = [
     traits: ["Coordinador", "Motivador", "Delegador", "Visionario"]
   },
   {
-    key: "humanista",
     emoji: "❤️",
     title: "El Cirujano Humanista",
     subtitle: "El paciente primero, siempre",
@@ -138,7 +438,6 @@ const scoring = [
 ];
 
 let state = { screen: "intro", current: 0, answers: [], selected: null };
-const scores = [0,0,0,0];
 
 function getProfile() {
   const s = [0,0,0,0];
@@ -151,7 +450,7 @@ function render() {
   if (state.screen === "intro") {
     app.innerHTML = `
       <div class="intro">
-        <div class="scalpel">🔬</div>
+        <span class="scalpel">🔬</span>
         <h2>¿Qué tipo de cirujano eres?</h2>
         <p>6 preguntas para descubrir tu perfil quirúrgico. Sin trampa, sin bisturí — solo personalidad pura.</p>
         <button class="start-btn" onclick="startQuiz()">Descubrir mi perfil</button>
@@ -178,14 +477,14 @@ function render() {
     const p = getProfile();
     app.innerHTML = `
       <div class="result-card">
-        <div class="result-emoji">${p.emoji}</div>
+        <span class="result-emoji">${p.emoji}</span>
         <div class="result-label">Tu perfil quirúrgico</div>
         <div class="result-title">${p.title}</div>
         <div class="result-subtitle">${p.subtitle}</div>
+        <div class="result-divider"></div>
         <div class="result-desc">${p.desc}</div>
         <div class="traits">${p.traits.map(t=>`<span class="trait">${t}</span>`).join("")}</div>
         <div class="brand">— Stand Centro de Salud · Congreso de Cirugía 2025 —</div>
-        <br>
         <button class="restart-btn" onclick="restart()">Volver a intentarlo</button>
       </div>`;
   }
@@ -203,3 +502,5 @@ function restart() { state = { screen: "intro", current: 0, answers: [], selecte
 
 render();
 </script>
+</body>
+</html>
