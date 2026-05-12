@@ -1,0 +1,205 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+.container { max-width: 600px; margin: 0 auto; padding: 1.5rem 1rem; }
+.progress-bar-bg { background: var(--color-background-secondary); border-radius: 999px; height: 6px; margin-bottom: 2rem; }
+.progress-bar-fill { background: #534AB7; border-radius: 999px; height: 6px; transition: width 0.4s ease; }
+.question-num { font-size: 12px; color: var(--color-text-tertiary); margin-bottom: 0.5rem; letter-spacing: 0.05em; text-transform: uppercase; }
+.question-text { font-size: 20px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 1.75rem; line-height: 1.4; }
+.options { display: flex; flex-direction: column; gap: 10px; }
+.option-btn { background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; text-align: left; cursor: pointer; font-size: 15px; color: var(--color-text-primary); transition: border-color 0.15s, background 0.15s; display: flex; align-items: center; gap: 12px; }
+.option-btn:hover { border-color: #534AB7; background: var(--color-background-secondary); }
+.option-btn.selected { border-color: #534AB7; background: #EEEDFE; color: #3C3489; }
+.option-letter { width: 28px; height: 28px; border-radius: 50%; background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; color: var(--color-text-secondary); flex-shrink: 0; }
+.option-btn.selected .option-letter { background: #534AB7; color: #fff; border-color: #534AB7; }
+.next-btn { margin-top: 1.5rem; width: 100%; padding: 0.85rem; background: #534AB7; color: #fff; border: none; border-radius: var(--border-radius-lg); font-size: 16px; font-weight: 500; cursor: pointer; opacity: 0.4; pointer-events: none; transition: opacity 0.2s; }
+.next-btn.active { opacity: 1; pointer-events: all; }
+.next-btn:hover.active { background: #3C3489; }
+.result-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.75rem 1.5rem; text-align: center; }
+.result-emoji { font-size: 56px; margin-bottom: 1rem; }
+.result-label { font-size: 12px; color: var(--color-text-tertiary); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.35rem; }
+.result-title { font-size: 26px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 0.75rem; }
+.result-subtitle { font-size: 13px; color: #534AB7; font-weight: 500; margin-bottom: 1rem; }
+.result-desc { font-size: 15px; color: var(--color-text-secondary); line-height: 1.65; margin-bottom: 1.5rem; }
+.traits { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 1.5rem; }
+.trait { background: #EEEDFE; color: #3C3489; font-size: 13px; padding: 5px 14px; border-radius: 999px; }
+.brand { font-size: 13px; color: var(--color-text-tertiary); margin-top: 0.5rem; }
+.restart-btn { background: transparent; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-lg); padding: 0.6rem 1.25rem; font-size: 14px; color: var(--color-text-secondary); cursor: pointer; margin-top: 1rem; }
+.restart-btn:hover { background: var(--color-background-secondary); }
+.intro { text-align: center; padding: 1rem 0 2rem; }
+.intro h2 { font-size: 22px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 0.75rem; }
+.intro p { font-size: 15px; color: var(--color-text-secondary); line-height: 1.6; margin-bottom: 1.75rem; }
+.start-btn { background: #534AB7; color: #fff; border: none; border-radius: var(--border-radius-lg); padding: 0.85rem 2.5rem; font-size: 16px; font-weight: 500; cursor: pointer; }
+.start-btn:hover { background: #3C3489; }
+.scalpel { font-size: 48px; margin-bottom: 1rem; }
+</style>
+
+<div class="container">
+  <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Quiz interactivo: ¿Qué tipo de cirujano eres?</h2>
+  <div id="app"></div>
+</div>
+
+<script>
+const questions = [
+  {
+    text: "Es viernes a las 5pm y entra un caso de urgencia. Tu primer pensamiento es...",
+    options: [
+      "Ya lo sabía, siempre pasa los viernes",
+      "¿Cuál es el protocolo? Vamos por partes",
+      "¡Avísenme cuando todo esté listo, yo entro!",
+      "Primero tranquilizo al paciente y al equipo"
+    ]
+  },
+  {
+    text: "Tu música ideal para operar sería...",
+    options: [
+      "Silencio absoluto, necesito concentración",
+      "Rock clásico, para mantener el ritmo",
+      "Lo que el equipo quiera, no me importa",
+      "Algo relajante, para que todos estén cómodos"
+    ]
+  },
+  {
+    text: "Si el proceso no sale como esperabas, lo primero que haces es...",
+    options: [
+      "Analizar qué falló antes de seguir",
+      "Improvisar con lo que tengo",
+      "Delegar y pedir apoyo inmediatamente",
+      "Mantener la calma y comunicarlo al equipo"
+    ]
+  },
+  {
+    text: "Tu lugar favorito en el hospital es...",
+    options: [
+      "La biblioteca o el área de estudio",
+      "El quirófano, claro",
+      "La sala de reuniones, me gusta coordinar",
+      "Donde esté el paciente, ahí es donde importa"
+    ]
+  },
+  {
+    text: "Cuando terminas una cirugía exitosa, lo primero que haces es...",
+    options: [
+      "Revisar mentalmente si algo pudo hacerse mejor",
+      "Celebrar con el equipo en silencio",
+      "Ya estás pensando en el próximo caso",
+      "Ir a hablar con la familia del paciente"
+    ]
+  },
+  {
+    text: "Un residente comete un error menor. Tú...",
+    options: [
+      "Lo corriges en el momento con precisión",
+      "Lo dejas terminar y lo hablas después",
+      "Tomas el control tú mismo",
+      "Lo conviertes en una lección para todos"
+    ]
+  }
+];
+
+const profiles = [
+  {
+    key: "estratega",
+    emoji: "🧠",
+    title: "El Cirujano Estratega",
+    subtitle: "Piensa dos pasos adelante",
+    desc: "Eres el tipo de cirujano que no entra al quirófano sin tener un plan A, B y C. Tu superpoder es la anticipación: rara vez algo te toma por sorpresa. Eres la calma en medio del caos y el equipo confía en tu criterio.",
+    traits: ["Analítico", "Metódico", "Previsor", "Confiable"]
+  },
+  {
+    key: "intuitivo",
+    emoji: "⚡",
+    title: "El Cirujano Intuitivo",
+    subtitle: "Nació para el quirófano",
+    desc: "Cuando entras al quirófano, algo se activa en ti. Tu capacidad de tomar decisiones rápidas bajo presión es extraordinaria. Eres de los que no necesita todo el protocolo escrito porque lo llevas por dentro.",
+    traits: ["Decisivo", "Ágil", "Instintivo", "Resolutivo"]
+  },
+  {
+    key: "lider",
+    emoji: "🦁",
+    title: "El Cirujano Líder",
+    subtitle: "Un equipo detrás de cada éxito",
+    desc: "Para ti, la cirugía es un deporte de equipo. Sabes que el mejor resultado sale cuando todos están coordinados, motivados y en su mejor versión. Eres el capitán del barco, y lo sabes.",
+    traits: ["Coordinador", "Motivador", "Delegador", "Visionario"]
+  },
+  {
+    key: "humanista",
+    emoji: "❤️",
+    title: "El Cirujano Humanista",
+    subtitle: "El paciente primero, siempre",
+    desc: "Más allá de la técnica, para ti la medicina es una relación humana. Tienes una habilidad especial para conectar con pacientes y familias, y eso hace que tu trabajo sea realmente transformador.",
+    traits: ["Empático", "Vocacional", "Comunicador", "Cercano"]
+  }
+];
+
+const scoring = [
+  [0,1,2,3], [0,1,2,3], [0,1,2,3], [0,1,2,3], [0,1,2,3], [0,1,2,3]
+];
+
+let state = { screen: "intro", current: 0, answers: [], selected: null };
+const scores = [0,0,0,0];
+
+function getProfile() {
+  const s = [0,0,0,0];
+  state.answers.forEach((a, qi) => { s[scoring[qi][a]]++; });
+  return profiles[s.indexOf(Math.max(...s))];
+}
+
+function render() {
+  const app = document.getElementById("app");
+  if (state.screen === "intro") {
+    app.innerHTML = `
+      <div class="intro">
+        <div class="scalpel">🔬</div>
+        <h2>¿Qué tipo de cirujano eres?</h2>
+        <p>6 preguntas para descubrir tu perfil quirúrgico. Sin trampa, sin bisturí — solo personalidad pura.</p>
+        <button class="start-btn" onclick="startQuiz()">Descubrir mi perfil</button>
+      </div>`;
+  } else if (state.screen === "quiz") {
+    const q = questions[state.current];
+    const pct = ((state.current) / questions.length * 100).toFixed(0);
+    const letters = ["A","B","C","D"];
+    app.innerHTML = `
+      <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+      <div class="question-num">Pregunta ${state.current + 1} de ${questions.length}</div>
+      <div class="question-text">${q.text}</div>
+      <div class="options">
+        ${q.options.map((o,i) => `
+          <button class="option-btn${state.selected===i?' selected':''}" onclick="selectOption(${i})">
+            <span class="option-letter">${letters[i]}</span>
+            <span>${o}</span>
+          </button>`).join("")}
+      </div>
+      <button class="next-btn${state.selected!==null?' active':''}" onclick="nextQuestion()">
+        ${state.current < questions.length - 1 ? "Siguiente →" : "Ver mi resultado →"}
+      </button>`;
+  } else if (state.screen === "result") {
+    const p = getProfile();
+    app.innerHTML = `
+      <div class="result-card">
+        <div class="result-emoji">${p.emoji}</div>
+        <div class="result-label">Tu perfil quirúrgico</div>
+        <div class="result-title">${p.title}</div>
+        <div class="result-subtitle">${p.subtitle}</div>
+        <div class="result-desc">${p.desc}</div>
+        <div class="traits">${p.traits.map(t=>`<span class="trait">${t}</span>`).join("")}</div>
+        <div class="brand">— Stand Centro de Salud · Congreso de Cirugía 2025 —</div>
+        <br>
+        <button class="restart-btn" onclick="restart()">Volver a intentarlo</button>
+      </div>`;
+  }
+}
+
+function startQuiz() { state.screen = "quiz"; state.current = 0; state.answers = []; state.selected = null; render(); }
+function selectOption(i) { state.selected = i; render(); }
+function nextQuestion() {
+  if (state.selected === null) return;
+  state.answers.push(state.selected);
+  if (state.current < questions.length - 1) { state.current++; state.selected = null; render(); }
+  else { state.screen = "result"; render(); }
+}
+function restart() { state = { screen: "intro", current: 0, answers: [], selected: null }; render(); }
+
+render();
+</script>
